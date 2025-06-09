@@ -1,0 +1,12 @@
+{
+	"name": "ls_output_csv_files",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"connectionString": "DefaultEndpointsProtocol=https;AccountName=litheefadf;EndpointSuffix=core.windows.net;",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQDlFMUE5RDI1LUUxOTItNDc1OC04M0YzLUM5NjVENkFFREM3M18zYzc4Y2E5Yi1jYTJlLTRlMDktODI1Yy0wMDJjN2ZlZjZmYWIiDQp9"
+		}
+	}
+}

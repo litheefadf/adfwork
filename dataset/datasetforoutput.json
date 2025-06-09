@@ -1,0 +1,17 @@
+{
+	"name": "datasetforoutput",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_outptut_sql_db",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Project"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

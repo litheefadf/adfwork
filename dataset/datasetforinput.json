@@ -1,0 +1,53 @@
+{
+	"name": "datasetforinput",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_input_csv",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "inputcsvminiproject.csv",
+				"container": "inputfile"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "DeveloperID",
+				"type": "String"
+			},
+			{
+				"name": "DeveloperName",
+				"type": "String"
+			},
+			{
+				"name": "YearOFEstablishment",
+				"type": "String"
+			},
+			{
+				"name": "CEO",
+				"type": "String"
+			},
+			{
+				"name": "NumberOfEmployees",
+				"type": "String"
+			},
+			{
+				"name": "ServiceAmount",
+				"type": "String"
+			},
+			{
+				"name": "Rating",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

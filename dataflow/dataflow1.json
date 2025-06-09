@@ -1,0 +1,95 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "datasetcustomerscsv",
+						"type": "DatasetReference"
+					},
+					"name": "customerscsv"
+				},
+				{
+					"dataset": {
+						"referenceName": "datasetorderscsv",
+						"type": "DatasetReference"
+					},
+					"name": "orderscsv"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_outputfile_dataflow_joins",
+						"type": "DatasetReference"
+					},
+					"name": "outputfile"
+				}
+			],
+			"transformations": [
+				{
+					"name": "customersjoinorders"
+				},
+				{
+					"name": "removingcustomerid"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "derivedColumnsepartingyear"
+				},
+				{
+					"name": "Totalamount"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CustomerID as string,",
+				"          CustomerName as string,",
+				"          ContactName as string,",
+				"          Country as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> customerscsv",
+				"source(output(",
+				"          OrderID as string,",
+				"          CustomerID as string,",
+				"          OrderDate as string,",
+				"          Amount as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> orderscsv",
+				"customerscsv, orderscsv join(customerscsv@CustomerID == orderscsv@CustomerID,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> customersjoinorders",
+				"customersjoinorders select(mapColumn(",
+				"          CustomerID = customerscsv@CustomerID,",
+				"          CustomerName,",
+				"          ContactName,",
+				"          Country,",
+				"          OrderID,",
+				"          CustomerID = orderscsv@CustomerID,",
+				"          OrderDate,",
+				"          Amount",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> removingcustomerid",
+				"removingcustomerid filter(Country == 'Mexico') ~> filter1",
+				"filter1 derive(Year = year(toDate(OrderDate))) ~> derivedColumnsepartingyear",
+				"derivedColumnsepartingyear aggregate(groupBy(CustomerID),",
+				"     Amount = sum(toFloat(Amount))) ~> Totalamount",
+				"Totalamount sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> outputfile"
+			]
+		}
+	}
+}

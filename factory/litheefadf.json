@@ -1,0 +1,9 @@
+{
+	"name": "litheefadf",
+	"location": "eastus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "76a19f32-96d3-40de-935c-e7db9a4bca65",
+		"tenantId": "e58c324b-f186-4aa4-bce1-64b30597014f"
+	}
+}
