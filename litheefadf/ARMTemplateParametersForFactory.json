@@ -17,6 +17,9 @@
 		"ls_input_csv_connectionString": {
 			"value": ""
 		},
+		"ls_input_scdtype1_employees_csv_connectionString": {
+			"value": ""
+		},
 		"ls_orders_csv_connectionString": {
 			"value": ""
 		},
@@ -24,6 +27,9 @@
 			"value": ""
 		},
 		"ls_output_csv_files_connectionString": {
+			"value": ""
+		},
+		"ls_output_scdtype1_employees_sqldb_password": {
 			"value": ""
 		},
 		"LS_OUTPUT_COMBINEDOUTPUT_JOINS_properties_typeProperties_server": {
@@ -51,6 +57,15 @@
 			"value": "litheefdb"
 		},
 		"ls_outptut_sql_db_properties_typeProperties_userName": {
+			"value": "makbabu"
+		},
+		"ls_output_scdtype1_employees_sqldb_properties_typeProperties_server": {
+			"value": "sqlserverr0206.database.windows.net"
+		},
+		"ls_output_scdtype1_employees_sqldb_properties_typeProperties_database": {
+			"value": "litheefdb"
+		},
+		"ls_output_scdtype1_employees_sqldb_properties_typeProperties_userName": {
 			"value": "makbabu"
 		}
 	}
