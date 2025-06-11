@@ -43,6 +43,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_output_scdtype1_employees_sqldb'"
 		},
+		"ls_input_scdtype2_employee_csv_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_input_scdtype2_employee_csv'"
+		},
+		"ls_output_scdtype2_employee_sql_db_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_output_scdtype2_employee_sql_db'"
+		},
 		"LS_OUTPUT_COMBINEDOUTPUT_JOINS_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "sqlserverr0206.database.windows.net"
@@ -88,6 +96,18 @@
 			"defaultValue": "litheefdb"
 		},
 		"ls_output_scdtype1_employees_sqldb_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "makbabu"
+		},
+		"ls_output_scdtype2_employee_sql_db_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sqlserverr0206.database.windows.net"
+		},
+		"ls_output_scdtype2_employee_sql_db_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "litheefdb"
+		},
+		"ls_output_scdtype2_employee_sql_db_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "makbabu"
 		},
@@ -145,6 +165,12 @@
 					"ls_output_scdtype1_employees_sqldb_password": {
 						"value": "[parameters('ls_output_scdtype1_employees_sqldb_password')]"
 					},
+					"ls_input_scdtype2_employee_csv_connectionString": {
+						"value": "[parameters('ls_input_scdtype2_employee_csv_connectionString')]"
+					},
+					"ls_output_scdtype2_employee_sql_db_password": {
+						"value": "[parameters('ls_output_scdtype2_employee_sql_db_password')]"
+					},
 					"LS_OUTPUT_COMBINEDOUTPUT_JOINS_properties_typeProperties_server": {
 						"value": "[parameters('LS_OUTPUT_COMBINEDOUTPUT_JOINS_properties_typeProperties_server')]"
 					},
@@ -180,6 +206,15 @@
 					},
 					"ls_output_scdtype1_employees_sqldb_properties_typeProperties_userName": {
 						"value": "[parameters('ls_output_scdtype1_employees_sqldb_properties_typeProperties_userName')]"
+					},
+					"ls_output_scdtype2_employee_sql_db_properties_typeProperties_server": {
+						"value": "[parameters('ls_output_scdtype2_employee_sql_db_properties_typeProperties_server')]"
+					},
+					"ls_output_scdtype2_employee_sql_db_properties_typeProperties_database": {
+						"value": "[parameters('ls_output_scdtype2_employee_sql_db_properties_typeProperties_database')]"
+					},
+					"ls_output_scdtype2_employee_sql_db_properties_typeProperties_userName": {
+						"value": "[parameters('ls_output_scdtype2_employee_sql_db_properties_typeProperties_userName')]"
 					}
 				}
 			},

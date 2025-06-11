@@ -43,6 +43,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_output_scdtype1_employees_sqldb'"
 		},
+		"ls_input_scdtype2_employee_csv_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_input_scdtype2_employee_csv'"
+		},
+		"ls_output_scdtype2_employee_sql_db_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_output_scdtype2_employee_sql_db'"
+		},
 		"LS_OUTPUT_COMBINEDOUTPUT_JOINS_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "sqlserverr0206.database.windows.net"
@@ -88,6 +96,18 @@
 			"defaultValue": "litheefdb"
 		},
 		"ls_output_scdtype1_employees_sqldb_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "makbabu"
+		},
+		"ls_output_scdtype2_employee_sql_db_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sqlserverr0206.database.windows.net"
+		},
+		"ls_output_scdtype2_employee_sql_db_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "litheefdb"
+		},
+		"ls_output_scdtype2_employee_sql_db_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "makbabu"
 		}
@@ -1255,6 +1275,340 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/datasetforinputscdtype1employeescsv')]",
 				"[concat(variables('factoryId'), '/datasets/datasetforoutputscdtypeemployeessqldb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_input_scdtype2_employee_csv')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_input_scdtype2_employee_csv_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_output_scdtype2_employee_sql_db')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('ls_output_scdtype2_employee_sql_db_properties_typeProperties_server')]",
+					"database": "[parameters('ls_output_scdtype2_employee_sql_db_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls_output_scdtype2_employee_sql_db_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_output_scdtype2_employee_sql_db_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/inputdatasetscdtype2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_input_scdtype1_employees_csv",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "SCDTYPE1EMPLOYEE.csv",
+						"container": "inputfile"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "empid",
+						"type": "String"
+					},
+					{
+						"name": "empname",
+						"type": "String"
+					},
+					{
+						"name": "department",
+						"type": "String"
+					},
+					{
+						"name": "salary",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_input_scdtype1_employees_csv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/datasetoutputscdtype2sqldb')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_output_scdtype2_employee_sql_db",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "SurrogateKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "empid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "empname",
+						"type": "varchar"
+					},
+					{
+						"name": "department",
+						"type": "varchar"
+					},
+					{
+						"name": "salary",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "employeeoutputscdtype2"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_output_scdtype2_employee_sql_db')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/scdtype2')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "inputdatasetscdtype2",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						},
+						{
+							"dataset": {
+								"referenceName": "datasetoutputscdtype2sqldb",
+								"type": "DatasetReference"
+							},
+							"name": "employeetable"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "datasetoutputscdtype2sqldb",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "datasetoutputscdtype2sqldb",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
+						}
+					],
+					"transformations": [
+						{
+							"name": "addingIsActive"
+						},
+						{
+							"name": "select1"
+						},
+						{
+							"name": "lookup1"
+						},
+						{
+							"name": "EXISTINGEMPLOYEES"
+						},
+						{
+							"name": "select2"
+						},
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "alterRow1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          empid as integer,",
+						"          empname as string,",
+						"          department as string,",
+						"          salary as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source(output(",
+						"          SurrogateKey as integer,",
+						"          empid as integer,",
+						"          empname as string,",
+						"          department as string,",
+						"          salary as decimal(10,2)",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     isolationLevel: 'READ_UNCOMMITTED',",
+						"     format: 'table') ~> employeetable",
+						"source1 derive(IsActive = 1) ~> addingIsActive",
+						"employeetable select(mapColumn(",
+						"          SQL_SurrogateKey = SurrogateKey,",
+						"          SQL_empid = empid,",
+						"          SQL_empname = empname,",
+						"          SQL_department = department,",
+						"          SQL_salary = salary",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"source1, select1 lookup(empid == SQL_empid,",
+						"     multiple: true,",
+						"     broadcast: 'auto')~> lookup1",
+						"lookup1 filter(!isNull(SQL_empid)) ~> EXISTINGEMPLOYEES",
+						"EXISTINGEMPLOYEES select(mapColumn(",
+						"          SQL_SurrogateKey,",
+						"          SQL_empid,",
+						"          SQL_empname,",
+						"          SQL_department,",
+						"          SQL_salary",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select2",
+						"select2 derive(IsActive = 0) ~> derivedColumn1",
+						"derivedColumn1 alterRow(updateIf(1==1)) ~> alterRow1",
+						"addingIsActive sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          SurrogateKey as integer,",
+						"          empid as integer,",
+						"          empname as string,",
+						"          department as string,",
+						"          salary as decimal(10,2)",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 2,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
+						"alterRow1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          SurrogateKey as integer,",
+						"          empid as integer,",
+						"          empname as string,",
+						"          department as string,",
+						"          salary as decimal(10,2)",
+						"     ),",
+						"     deletable:false,",
+						"     insertable:false,",
+						"     updateable:true,",
+						"     upsertable:false,",
+						"     keys:['SurrogateKey'],",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     saveOrder: 1,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     mapColumn(",
+						"          SurrogateKey = SQL_SurrogateKey,",
+						"          empid = SQL_empid,",
+						"          empname = SQL_empname,",
+						"          department = SQL_department,",
+						"          salary = SQL_salary",
+						"     )) ~> sink2"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/inputdatasetscdtype2')]",
+				"[concat(variables('factoryId'), '/datasets/datasetoutputscdtype2sqldb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/scdtype2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "scdtype2",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"employeetable": {},
+									"sink1": {},
+									"sink2": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/scdtype2')]"
 			]
 		}
 	]
