@@ -51,6 +51,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_output_scdtype2_employee_sql_db'"
 		},
+		"ls_testtrigger_input_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_testtrigger_input'"
+		},
+		"ls_testtrigger_output_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_testtrigger_output'"
+		},
 		"LS_OUTPUT_COMBINEDOUTPUT_JOINS_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "sqlserverr0206.database.windows.net"
@@ -111,6 +119,10 @@
 			"type": "string",
 			"defaultValue": "makbabu"
 		},
+		"eventbasedtrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/65b90d11-ceb7-4dea-9b9e-6742b178e1f3/resourceGroups/litheef/providers/Microsoft.Storage/storageAccounts/litheefadf"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -170,6 +182,12 @@
 					},
 					"ls_output_scdtype2_employee_sql_db_password": {
 						"value": "[parameters('ls_output_scdtype2_employee_sql_db_password')]"
+					},
+					"ls_testtrigger_input_connectionString": {
+						"value": "[parameters('ls_testtrigger_input_connectionString')]"
+					},
+					"ls_testtrigger_output_connectionString": {
+						"value": "[parameters('ls_testtrigger_output_connectionString')]"
 					},
 					"LS_OUTPUT_COMBINEDOUTPUT_JOINS_properties_typeProperties_server": {
 						"value": "[parameters('LS_OUTPUT_COMBINEDOUTPUT_JOINS_properties_typeProperties_server')]"
@@ -233,6 +251,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"eventbasedtrigger_properties_typeProperties_scope": {
+						"value": "[parameters('eventbasedtrigger_properties_typeProperties_scope')]"
 					}
 				}
 			},

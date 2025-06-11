@@ -38,6 +38,12 @@
 		"ls_output_scdtype2_employee_sql_db_password": {
 			"value": ""
 		},
+		"ls_testtrigger_input_connectionString": {
+			"value": ""
+		},
+		"ls_testtrigger_output_connectionString": {
+			"value": ""
+		},
 		"LS_OUTPUT_COMBINEDOUTPUT_JOINS_properties_typeProperties_server": {
 			"value": "sqlserverr0206.database.windows.net"
 		},
@@ -82,6 +88,9 @@
 		},
 		"ls_output_scdtype2_employee_sql_db_properties_typeProperties_userName": {
 			"value": "makbabu"
+		},
+		"eventbasedtrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/65b90d11-ceb7-4dea-9b9e-6742b178e1f3/resourceGroups/litheef/providers/Microsoft.Storage/storageAccounts/litheefadf"
 		},
 		"containerUri": {
 			"value": ""
