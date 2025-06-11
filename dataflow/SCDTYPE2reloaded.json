@@ -1,0 +1,167 @@
+{
+	"name": "SCDTYPE2reloaded",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "dataset_input_scdtype2",
+						"type": "DatasetReference"
+					},
+					"name": "sourcecsv"
+				},
+				{
+					"dataset": {
+						"referenceName": "dataset_output_scdtype2",
+						"type": "DatasetReference"
+					},
+					"name": "scdtype2table"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "dataset_output_scdtype2",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "dataset_output_scdtype2",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "AddingIsActive"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "EXISTINGROWS"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "alterRow1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          EmployeeID as integer,",
+				"          EmployeeName as string,",
+				"          Department as string,",
+				"          salary as decimal(10,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> sourcecsv",
+				"source(output(",
+				"          SurrogateKey as integer,",
+				"          EmployeeID as integer,",
+				"          EmployeeName as string,",
+				"          Department as string,",
+				"          salary as decimal(10,2),",
+				"          IsActive as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> scdtype2table",
+				"sourcecsv derive(IsActive = 1) ~> AddingIsActive",
+				"scdtype2table select(mapColumn(",
+				"          SQL_SurrogateKey = SurrogateKey,",
+				"          SQL_EmployeeID = EmployeeID,",
+				"          SQL_EmployeeName = EmployeeName,",
+				"          SQL_Department = Department,",
+				"          SQL_salary = salary,",
+				"          SQL_IsActive = IsActive",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"sourcecsv, select1 lookup(EmployeeID == SQL_EmployeeID,",
+				"     multiple: true,",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1 filter(!isNull(SQL_EmployeeID)) ~> EXISTINGROWS",
+				"EXISTINGROWS select(mapColumn(",
+				"          SQL_SurrogateKey,",
+				"          SQL_EmployeeID,",
+				"          SQL_EmployeeName,",
+				"          SQL_Department,",
+				"          SQL_salary,",
+				"          SQL_IsActive",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 derive(SQL_IsActive = 0) ~> derivedColumn1",
+				"derivedColumn1 alterRow(updateIf(1==1)) ~> alterRow1",
+				"AddingIsActive sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          SurrogateKey as integer,",
+				"          EmployeeID as integer,",
+				"          EmployeeName as string,",
+				"          Department as string,",
+				"          salary as decimal(10,2),",
+				"          IsActive as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 2,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          EmployeeID,",
+				"          EmployeeName,",
+				"          Department,",
+				"          salary,",
+				"          IsActive",
+				"     )) ~> sink1",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          SurrogateKey as integer,",
+				"          EmployeeID as integer,",
+				"          EmployeeName as string,",
+				"          Department as string,",
+				"          salary as decimal(10,2),",
+				"          IsActive as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     keys:['SurrogateKey'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          SurrogateKey = SQL_SurrogateKey,",
+				"          EmployeeID = SQL_EmployeeID,",
+				"          EmployeeName = SQL_EmployeeName,",
+				"          Department = SQL_Department,",
+				"          salary = SQL_salary,",
+				"          IsActive = SQL_IsActive",
+				"     )) ~> sink2"
+			]
+		}
+	}
+}

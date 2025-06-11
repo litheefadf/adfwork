@@ -1,0 +1,46 @@
+{
+	"name": "dataset_output_scdtype2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_output_scdtype2_sqldb",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "SurrogateKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "EmployeeID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "EmployeeName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Department",
+				"type": "nvarchar"
+			},
+			{
+				"name": "salary",
+				"type": "decimal",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "IsActive",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "scdtype2sql"
+		}
+	}
+}

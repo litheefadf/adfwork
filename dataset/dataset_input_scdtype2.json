@@ -1,0 +1,40 @@
+{
+	"name": "dataset_input_scdtype2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_input_scdtype2_csv",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "scdtype2csv.csv",
+				"container": "inputfile"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "EmployeeID",
+				"type": "String"
+			},
+			{
+				"name": "EmployeeName",
+				"type": "String"
+			},
+			{
+				"name": "Department",
+				"type": "String"
+			},
+			{
+				"name": "salary",
+				"type": "String"
+			}
+		]
+	}
+}
