@@ -27,6 +27,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_input_scdtype1_employees_csv'"
 		},
+		"ls_input_scdtype2_csv_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_input_scdtype2_csv'"
+		},
+		"ls_input_scdtype2_employee_csv_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_input_scdtype2_employee_csv'"
+		},
 		"ls_orders_csv_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_orders_csv'"
@@ -43,13 +51,13 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_output_scdtype1_employees_sqldb'"
 		},
-		"ls_input_scdtype2_employee_csv_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_input_scdtype2_employee_csv'"
-		},
 		"ls_output_scdtype2_employee_sql_db_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_output_scdtype2_employee_sql_db'"
+		},
+		"ls_output_scdtype2_sqldb_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_output_scdtype2_sqldb'"
 		},
 		"ls_testtrigger_input_connectionString": {
 			"type": "secureString",
@@ -116,6 +124,18 @@
 			"defaultValue": "litheefdb"
 		},
 		"ls_output_scdtype2_employee_sql_db_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "makbabu"
+		},
+		"ls_output_scdtype2_sqldb_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sqlserverr0206.database.windows.net"
+		},
+		"ls_output_scdtype2_sqldb_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "litheefdb"
+		},
+		"ls_output_scdtype2_sqldb_properties_typeProperties_userName": {
 			"type": "string",
 			"defaultValue": "makbabu"
 		}
@@ -275,6 +295,32 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ls_input_scdtype2_csv')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_input_scdtype2_csv_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_input_scdtype2_employee_csv')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_input_scdtype2_employee_csv_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ls_orders_csv')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -345,19 +391,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/ls_input_scdtype2_employee_csv')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('ls_input_scdtype2_employee_csv_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/ls_output_scdtype2_employee_sql_db')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -374,6 +407,28 @@
 					"password": {
 						"type": "SecureString",
 						"value": "[parameters('ls_output_scdtype2_employee_sql_db_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_output_scdtype2_sqldb')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('ls_output_scdtype2_sqldb_properties_typeProperties_server')]",
+					"database": "[parameters('ls_output_scdtype2_sqldb_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "SQL",
+					"userName": "[parameters('ls_output_scdtype2_sqldb_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_output_scdtype2_sqldb_password')]"
 					}
 				}
 			},
@@ -523,12 +578,12 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/datasetcustomerscsv')]",
+			"name": "[concat(parameters('factoryName'), '/dataset_input_scdtype2')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "ls_customers_csv",
+					"referenceName": "ls_input_scdtype2_csv",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -536,7 +591,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "customers.csv",
+						"fileName": "scdtype2csv.csv",
 						"container": "inputfile"
 					},
 					"columnDelimiter": ",",
@@ -546,113 +601,11 @@
 				},
 				"schema": [
 					{
-						"name": "CustomerID",
+						"name": "EmployeeID",
 						"type": "String"
 					},
 					{
-						"name": "CustomerName",
-						"type": "String"
-					},
-					{
-						"name": "ContactName",
-						"type": "String"
-					},
-					{
-						"name": "Country",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_customers_csv')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/datasetforinput')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_input_csv",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "inputcsvminiproject.csv",
-						"container": "inputfile"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "DeveloperID",
-						"type": "String"
-					},
-					{
-						"name": "DeveloperName",
-						"type": "String"
-					},
-					{
-						"name": "YearOFEstablishment",
-						"type": "String"
-					},
-					{
-						"name": "CEO",
-						"type": "String"
-					},
-					{
-						"name": "NumberOfEmployees",
-						"type": "String"
-					},
-					{
-						"name": "ServiceAmount",
-						"type": "String"
-					},
-					{
-						"name": "Rating",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_input_csv')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/datasetforinputscdtype1employeescsv')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_input_scdtype1_employees_csv",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "employeesscdtype1.csv",
-						"container": "inputfile"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "ID",
-						"type": "String"
-					},
-					{
-						"name": "Name",
+						"name": "EmployeeName",
 						"type": "String"
 					},
 					{
@@ -660,34 +613,64 @@
 						"type": "String"
 					},
 					{
-						"name": "Salary",
+						"name": "salary",
 						"type": "String"
 					}
 				]
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_input_scdtype1_employees_csv')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_input_scdtype2_csv')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/datasetforoutput')]",
+			"name": "[concat(parameters('factoryName'), '/dataset_output_scdtype2')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "ls_outptut_sql_db",
+					"referenceName": "ls_output_scdtype2_sqldb",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
 				"type": "AzureSqlTable",
-				"schema": [],
+				"schema": [
+					{
+						"name": "SurrogateKey",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "EmployeeID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "EmployeeName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Department",
+						"type": "nvarchar"
+					},
+					{
+						"name": "salary",
+						"type": "decimal",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "IsActive",
+						"type": "int",
+						"precision": 10
+					}
+				],
 				"typeProperties": {
 					"schema": "dbo",
-					"table": "Project"
+					"table": "scdtype2sql"
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_outptut_sql_db')]"
+				"[concat(variables('factoryId'), '/linkedServices/ls_output_scdtype2_sqldb')]"
 			]
 		}
 	]

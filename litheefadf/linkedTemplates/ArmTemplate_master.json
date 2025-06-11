@@ -27,6 +27,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_input_scdtype1_employees_csv'"
 		},
+		"ls_input_scdtype2_csv_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_input_scdtype2_csv'"
+		},
+		"ls_input_scdtype2_employee_csv_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_input_scdtype2_employee_csv'"
+		},
 		"ls_orders_csv_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_orders_csv'"
@@ -43,13 +51,13 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_output_scdtype1_employees_sqldb'"
 		},
-		"ls_input_scdtype2_employee_csv_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_input_scdtype2_employee_csv'"
-		},
 		"ls_output_scdtype2_employee_sql_db_password": {
 			"type": "secureString",
 			"metadata": "Secure string for 'password' of 'ls_output_scdtype2_employee_sql_db'"
+		},
+		"ls_output_scdtype2_sqldb_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_output_scdtype2_sqldb'"
 		},
 		"ls_testtrigger_input_connectionString": {
 			"type": "secureString",
@@ -119,6 +127,18 @@
 			"type": "string",
 			"defaultValue": "makbabu"
 		},
+		"ls_output_scdtype2_sqldb_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sqlserverr0206.database.windows.net"
+		},
+		"ls_output_scdtype2_sqldb_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "litheefdb"
+		},
+		"ls_output_scdtype2_sqldb_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "makbabu"
+		},
 		"eventbasedtrigger_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/65b90d11-ceb7-4dea-9b9e-6742b178e1f3/resourceGroups/litheef/providers/Microsoft.Storage/storageAccounts/litheefadf"
@@ -165,6 +185,12 @@
 					"ls_input_scdtype1_employees_csv_connectionString": {
 						"value": "[parameters('ls_input_scdtype1_employees_csv_connectionString')]"
 					},
+					"ls_input_scdtype2_csv_connectionString": {
+						"value": "[parameters('ls_input_scdtype2_csv_connectionString')]"
+					},
+					"ls_input_scdtype2_employee_csv_connectionString": {
+						"value": "[parameters('ls_input_scdtype2_employee_csv_connectionString')]"
+					},
 					"ls_orders_csv_connectionString": {
 						"value": "[parameters('ls_orders_csv_connectionString')]"
 					},
@@ -177,11 +203,11 @@
 					"ls_output_scdtype1_employees_sqldb_password": {
 						"value": "[parameters('ls_output_scdtype1_employees_sqldb_password')]"
 					},
-					"ls_input_scdtype2_employee_csv_connectionString": {
-						"value": "[parameters('ls_input_scdtype2_employee_csv_connectionString')]"
-					},
 					"ls_output_scdtype2_employee_sql_db_password": {
 						"value": "[parameters('ls_output_scdtype2_employee_sql_db_password')]"
+					},
+					"ls_output_scdtype2_sqldb_password": {
+						"value": "[parameters('ls_output_scdtype2_sqldb_password')]"
 					},
 					"ls_testtrigger_input_connectionString": {
 						"value": "[parameters('ls_testtrigger_input_connectionString')]"
@@ -233,6 +259,15 @@
 					},
 					"ls_output_scdtype2_employee_sql_db_properties_typeProperties_userName": {
 						"value": "[parameters('ls_output_scdtype2_employee_sql_db_properties_typeProperties_userName')]"
+					},
+					"ls_output_scdtype2_sqldb_properties_typeProperties_server": {
+						"value": "[parameters('ls_output_scdtype2_sqldb_properties_typeProperties_server')]"
+					},
+					"ls_output_scdtype2_sqldb_properties_typeProperties_database": {
+						"value": "[parameters('ls_output_scdtype2_sqldb_properties_typeProperties_database')]"
+					},
+					"ls_output_scdtype2_sqldb_properties_typeProperties_userName": {
+						"value": "[parameters('ls_output_scdtype2_sqldb_properties_typeProperties_userName')]"
 					}
 				}
 			},
@@ -251,6 +286,26 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'litheefadf_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "litheefadf_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
 					},
 					"eventbasedtrigger_properties_typeProperties_scope": {
 						"value": "[parameters('eventbasedtrigger_properties_typeProperties_scope')]"
@@ -258,7 +313,7 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'litheefadf_ArmTemplate_0')]"
+				"[resourceId('Microsoft.Resources/deployments', 'litheefadf_ArmTemplate_1')]"
 			]
 		}
 	]
