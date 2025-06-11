@@ -1,0 +1,22 @@
+{
+	"name": "ds_testrigger_input",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_testtrigger_input",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "testtriggerinput"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
