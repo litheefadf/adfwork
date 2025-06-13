@@ -1,5 +1,5 @@
 {
-	"name": "pipeline2",
+	"name": "Dataflowjoins_filetrs_derivedcolumnsetc",
 	"properties": {
 		"activities": [
 			{
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "dataflowforjoins_derivedcolumns_filetrs_etc",
 						"type": "DataFlowReference"
 					},
 					"compute": {

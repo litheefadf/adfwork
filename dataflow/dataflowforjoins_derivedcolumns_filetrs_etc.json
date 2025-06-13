@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "dataflowforjoins_derivedcolumns_filetrs_etc",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
